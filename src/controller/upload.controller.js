@@ -17,6 +17,7 @@ class uploadController {
       },
     });
     const { success, message, data } = res.data;
+    console.log(res.data);
     if (success) {
       ctx.body = {
         code: 0,
@@ -27,7 +28,6 @@ class uploadController {
       ctx.body = {
         code: -1,
         msg: message,
-        result: images,
       };
     }
   }
