@@ -76,11 +76,15 @@ const updatePasswordVerify = async (ctx, next) => {
   }
   await next();
 };
-
+const verifyUserList = async (ctx, next) => {
+  console.log(ctx.request.query);
+  await next();
+};
 module.exports = {
   userValidator,
   userVerify,
   cryptPassword,
   loginVerify,
   updatePasswordVerify,
+  verifyUserList,
 };

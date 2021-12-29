@@ -4,13 +4,16 @@ const koaBody = require("koa-body");
 const static = require("koa-static");
 const useRoutes = require("../router/index");
 const verifyParam = require("../utils/verifyParam");
+const getList = require("../utils/getList");
 const app = new Koa();
+//获取所有,分页中间件
+app.use(getList);
 app.use(static(path.resolve(__dirname, "../upload")));
 app.use(
   koaBody({
     multipart: true,
     formidable: {
-      uploadDir: path.resolve(__dirname, "../upload"),
+      // uploadDir: path.resolve(__dirname, "../upload"),
       keepExtensions: true, //保存扩展名
       maxFileSize: 200 * 1024 * 1024, // 设置上传文件大小最大限制，默认2M
     },

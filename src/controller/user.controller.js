@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const { createUser, updateById } = require("../service/user.service");
 const { PRIVATE_KEY } = require("../app/config");
+const User = require("../model/user.model");
 class UserController {
   async register(ctx, next) {
     //1.获取数据
@@ -39,13 +40,15 @@ class UserController {
       expiresIn: 60 * 60 * 24 * 7, //7天
       algorithm: "RS256",
     });
+    const userInfo = Object.assign(ctx.state.user, {
+      password: undefined,
+    });
     ctx.body = {
       code: 0,
       msg: "用户登录成功",
       result: {
-        id,
-        user_name,
         token,
+        userInfo,
       },
     };
   }
@@ -66,6 +69,13 @@ class UserController {
         msg: "修改密码错误!",
       };
     }
+  }
+  async getUserList(ctx, next) {
+    await ctx.getList(User, {
+      attributes: {
+        exclude: ["password", "deletedAt"],
+      },
+    });
   }
 }
 module.exports = new UserController();

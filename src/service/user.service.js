@@ -28,5 +28,10 @@ class UserService {
     });
     return Boolean(res[0]);
   }
+  // async getUserList() {
+  //   User.findAndCountAll({
+  //     where,
+  //   });
+  // }
 }
 module.exports = new UserService();
