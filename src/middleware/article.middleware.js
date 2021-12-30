@@ -11,6 +11,16 @@ const verifyArticleAdd = async (ctx, next) => {
     },
     cover: "string",
     canComment: [0, 1],
+    tags: {
+      required: false,
+      type: "array",
+      itemType: "number",
+    },
+    classifies: {
+      required: false,
+      type: "array",
+      itemType: "number",
+    },
   });
   await next();
 };
@@ -27,6 +37,16 @@ const verifyArticleUpdate = async (ctx, next) => {
     },
     cover: "string",
     canComment: [0, 1],
+    tags: {
+      required: false,
+      type: "array",
+      itemType: "number",
+    },
+    classifies: {
+      required: false,
+      type: "array",
+      itemType: "number",
+    },
   });
   await next();
 };

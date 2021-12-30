@@ -36,5 +36,5 @@ const User = sequelize.define(
     paranoid: true, //软删除
   }
 );
-User.sync();
+// User.sync();
 module.exports = User;

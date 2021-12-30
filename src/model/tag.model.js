@@ -1,6 +1,6 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../db/seq");
-const Article = require("./article.model");
+// const Article = require("./article.model");
 const Tag = sequelize.define("tag", {
   name: {
     type: DataTypes.STRING,
@@ -9,6 +9,6 @@ const Tag = sequelize.define("tag", {
     comment: "标签",
   },
 });
-Tag.belongsTo(Article);
-Tag.sync();
+// Tag.belongsTo(Article);
+// Tag.sync();
 module.exports = Tag;

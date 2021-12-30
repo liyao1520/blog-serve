@@ -41,5 +41,5 @@ const BlogArticle = sequelize.define(
     paranoid: true, //软删除
   }
 );
-BlogArticle.sync();
+// BlogArticle.sync();
 module.exports = BlogArticle;

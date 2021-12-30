@@ -1,6 +1,6 @@
 module.exports = async function (ctx, next) {
   if (ctx.request.method === "GET") {
-    ctx.getList = async function getList(Model, option) {
+    ctx.findAll = async function findAll(Model, option) {
       if (Model === undefined) {
         throw "function getList  model is  undefined";
       }

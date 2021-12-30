@@ -4,10 +4,13 @@ const koaBody = require("koa-body");
 const static = require("koa-static");
 const useRoutes = require("../router/index");
 const verifyParam = require("../utils/verifyParam");
-const getList = require("../utils/getList");
+const findAll = require("../utils/findAll");
+const sequelize = require("../model/index");
+sequelize.sync()
 const app = new Koa();
+
 //获取所有,分页中间件
-app.use(getList);
+app.use(findAll);
 app.use(static(path.resolve(__dirname, "../upload")));
 app.use(
   koaBody({

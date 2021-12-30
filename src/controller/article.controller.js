@@ -1,22 +1,75 @@
-const { addArticle, updateArticle, deleteArticle } = require("../service/article.service");
+const sequelize = require("sequelize");
+const { Op } = sequelize;
+const { addArticle, updateArticle, deleteArticle, addArticleCount } = require("../service/article.service");
 const Article = require("../model/article.model");
 class ArticleController {
   async add(ctx, next) {
-    const { content, title, cover, canComment } = ctx.request.body;
-    const res = await addArticle({ content, title, cover, canComment });
-    ctx.body = {
-      code: 0,
-      msg: "新增成功",
-      result: res,
-    };
+    const { content, title, cover, canComment, tags, classifies } = ctx.request.body;
+    const res = await addArticle({ content, title, cover, canComment, tags, classifies });
+    if (res) {
+      ctx.body = {
+        code: 0,
+        msg: "新增成功",
+        result: "",
+      };
+    }
   }
   async findAll(ctx) {
-    //ctx.getList 已经帮助处理了
-    await ctx.getList(Article);
+    //处理参数
+    const { str, title, content, sort } = ctx.request.query;
+    console.log(ctx.request.query);
+    const whereOpt = {};
+    //1.str title content 三选一
+    if (str) {
+      // 同时匹配content和title
+      Object.assign(whereOpt, {
+        [Op.or]: [
+          {
+            title: {
+              [Op.like]: "%" + str + "%",
+            },
+          },
+          {
+            content: {
+              [Op.like]: "%" + str + "%",
+            },
+          },
+        ],
+      });
+    } else if (title) {
+      Object.assign(whereOpt, {
+        title: {
+          [Op.like]: "%" + title + "%",
+        },
+      });
+    } else if (content) {
+      Object.assign(whereOpt, {
+        content: {
+          [Op.like]: "%" + content + "%",
+        },
+      });
+    }
+    // 2. sort hot new
+    const orderOpt = [];
+    if (sort == "hot") {
+      orderOpt.push(["count", "DESC"]);
+    }
+    if (sort == "new") {
+      orderOpt.push(["updatedAt", "DESC"]);
+    }
+
+    console.log({ include: ["tags", "classifies"], orderOpt, whereOpt });
+    await ctx.findAll(Article, {
+      include: ["tags", "classifies"],
+      order: orderOpt,
+      where: whereOpt,
+      distinct: true,
+    });
   }
   async update(ctx) {
-    const { content, title, cover, canComment, id } = ctx.request.body;
-    const res = await updateArticle({ content, title, cover, canComment, id });
+    const { content, title, cover, canComment, id, classifies, tags } = ctx.request.body;
+    const res = await updateArticle({ id, content, title, cover, canComment, classifies, tags });
+
     if (res) {
       ctx.body = {
         code: 0,
@@ -42,6 +95,16 @@ class ArticleController {
       msg: "查询成功",
       result: article,
     };
+  }
+  //增加浏览量
+  async addCount(ctx) {
+    const res = await addArticleCount(ctx.request.params.id);
+    if (res) {
+      ctx.body = {
+        code: 0,
+        msg: "浏览量+1",
+      };
+    }
   }
 }
 module.exports = new ArticleController();

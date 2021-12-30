@@ -1,6 +1,5 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../db/seq");
-const Article = require("./article.model");
 const Classify = sequelize.define("Classify", {
   name: {
     type: DataTypes.STRING,
@@ -14,6 +13,6 @@ const Classify = sequelize.define("Classify", {
     comment: "描述",
   },
 });
-Classify.belongsTo(Article);
-Classify.sync();
+// Classify.belongsTo(Article);
+// Classify.sync();
 module.exports = Classify;
