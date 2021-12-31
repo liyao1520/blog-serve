@@ -2,10 +2,11 @@ const sequelize = require("sequelize");
 const { Op } = sequelize;
 const { addArticle, updateArticle, deleteArticle, addArticleCount } = require("../service/article.service");
 const Article = require("../model/article.model");
+const Tag = require("../model/tag.model");
 class ArticleController {
   async add(ctx, next) {
-    const { content, title, cover, canComment, tags, classifies } = ctx.request.body;
-    const res = await addArticle({ content, title, cover, canComment, tags, classifies });
+    const { content, title, cover, canComment, tags, classify } = ctx.request.body;
+    const res = await addArticle({ content, title, cover, canComment, tags, classify });
     if (res) {
       ctx.body = {
         code: 0,
@@ -16,7 +17,7 @@ class ArticleController {
   }
   async findAll(ctx) {
     //处理参数
-    const { str, title, content, sort } = ctx.request.query;
+    const { str, title, content, sort, tagId, classifyId } = ctx.request.query;
     console.log(ctx.request.query);
     const whereOpt = {};
     //1.str title content 三选一
@@ -57,18 +58,41 @@ class ArticleController {
     if (sort == "new") {
       orderOpt.push(["updatedAt", "DESC"]);
     }
+    // 3. classifyId
+    if (!isNaN(parseInt(classifyId))) {
+      Object.assign(whereOpt, {
+        classifyId,
+      });
+    }
+    // 4. tagId
+    const includeTagOpt = {
+      model: Tag,
+      as: "tags",
+    };
+    if (!isNaN(parseInt(tagId))) {
+      Object.assign(includeTagOpt, {
+        where: {
+          id: tagId,
+        },
+      });
+    }
 
-    console.log({ include: ["tags", "classifies"], orderOpt, whereOpt });
     await ctx.findAll(Article, {
-      include: ["tags", "classifies"],
+      include: [includeTagOpt, "classify"],
+      order: orderOpt,
+      where: whereOpt,
+      distinct: true,
+    });
+    console.log({
+      include: [includeTagOpt, "classify"],
       order: orderOpt,
       where: whereOpt,
       distinct: true,
     });
   }
   async update(ctx) {
-    const { content, title, cover, canComment, id, classifies, tags } = ctx.request.body;
-    const res = await updateArticle({ id, content, title, cover, canComment, classifies, tags });
+    const { content, title, cover, canComment, id, classify, tags } = ctx.request.body;
+    const res = await updateArticle({ id, content, title, cover, canComment, classify, tags });
 
     if (res) {
       ctx.body = {

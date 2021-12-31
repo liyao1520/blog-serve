@@ -14,12 +14,10 @@ Tag.belongsToMany(Article, {
   through: "Article_Tag",
   as: "articles",
 });
-Article.belongsToMany(Classify, {
-  through: "Article_Classify",
-  as: "classifies",
+Article.belongsTo(Classify, {
+  as: "classify",
 });
-Classify.belongsToMany(Article, {
-  through: "Article_Classify",
+Classify.hasMany(Article, {
   as: "articles",
 });
 Article.hasMany(Comment, {

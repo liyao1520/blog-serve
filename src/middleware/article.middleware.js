@@ -16,10 +16,9 @@ const verifyArticleAdd = async (ctx, next) => {
       type: "array",
       itemType: "number",
     },
-    classifies: {
+    classify: {
       required: false,
-      type: "array",
-      itemType: "number",
+      type: "number",
     },
   });
   await next();
@@ -42,10 +41,9 @@ const verifyArticleUpdate = async (ctx, next) => {
       type: "array",
       itemType: "number",
     },
-    classifies: {
+    classify: {
       required: false,
-      type: "array",
-      itemType: "number",
+      type: "number",
     },
   });
   await next();
@@ -71,4 +69,5 @@ const HadArticleById = async (ctx, next) => {
   ctx.state.article = article;
   await next();
 };
+
 module.exports = { verifyArticleAdd, verifyArticleUpdate, HadArticleById };

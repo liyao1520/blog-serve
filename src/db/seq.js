@@ -3,6 +3,11 @@ const { MYSQL_USER, MYSQL_PASSWORD, MYSQL_DATABASE, MYSQL_HOST } = require("../a
 const sequelize = new Sequelize(MYSQL_DATABASE, MYSQL_USER, MYSQL_PASSWORD, {
   host: MYSQL_HOST,
   dialect: "mysql",
+  // 添加这个配置
+  dialectOptions: {
+    dateStrings: true,
+    typeCast: true,
+  },
 });
 (async () => {
   try {

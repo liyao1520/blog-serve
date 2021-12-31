@@ -1,6 +1,6 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../db/seq");
-const Classify = sequelize.define("Classify", {
+const Classify = sequelize.define("classify", {
   name: {
     type: DataTypes.STRING,
     unique: true,

@@ -1,7 +1,7 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../db/seq");
 const Comment = sequelize.define(
-  "Comment",
+  "comment",
   {
     content: {
       type: DataTypes.STRING,

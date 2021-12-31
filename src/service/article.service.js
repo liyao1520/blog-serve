@@ -2,12 +2,13 @@ const Article = require("../model/article.model");
 const Classify = require("../model/classify.model");
 const Tag = require("../model/tag.model");
 class ArticleService {
-  async addArticle({ content, title, cover, canComment, tags = [], classifies = [] }) {
+  async addArticle({ content, title, cover, canComment, tags = [], classify }) {
     const article = await Article.create({
       content,
       title,
       cover,
       canComment,
+      classifyId: classify,
     });
     //添加tag
     let tags_result = await Tag.findAll({
@@ -15,31 +16,19 @@ class ArticleService {
         id: tags,
       },
     });
-    const res1 = await article.setTags(tags_result);
-    //添加classifies
-    const classifies_result = await Classify.findAll({
-      where: {
-        id: classifies,
-      },
-    });
-    const res2 = await article.setClassifies(classifies_result);
-    console.log(res2);
-    return res1 && res2;
+    const res = await article.setTags(tags_result);
+    return res;
   }
-  async updateArticle({ id, content, title, cover, canComment, tags, classifies }) {
+  async updateArticle({ id, content, title, cover, canComment, tags, classify }) {
     const article = await Article.findByPk(id);
-    const res1 = await article.update({ content, title, cover, canComment });
+    const res1 = await article.update({ content, title, cover, canComment, classifyId: classify });
     const tags_res = await Tag.findAll({
       where: {
         id: tags,
       },
     });
-    const classifies_res = await Classify.findAll({
-      where: { id: classifies },
-    });
     const res2 = await article.setTags(tags_res);
-    const res3 = await article.setClassifies(classifies_res);
-    return res1 && res2 && res3;
+    return res1 && res2;
   }
   async deleteArticle(id) {
     const res = await Article.destroy({
@@ -49,7 +38,7 @@ class ArticleService {
   }
   async getArticleById(id) {
     return await Article.findByPk(id, {
-      include: ["tags", "classifies"],
+      include: ["tags", "classify"],
     });
   }
   async addArticleCount(id) {

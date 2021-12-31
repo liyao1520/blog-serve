@@ -22,28 +22,8 @@ const verifyAdd = async (ctx, next) => {
   });
   await next();
 };
-const verifyFIndAllparams = async (ctx, next) => {
-  ctx.verifyParams({
-    str: {
-      type: "string",
-      required: false,
-    },
-    title: {
-      type: "string",
-      required: false,
-    },
-    content: {
-      type: "string",
-      required: false,
-    },
-    sort: {
-      type: "string",
-      require: false,
-    },
-  });
-};
+
 module.exports = {
   verifyHadTagByName,
   verifyAdd,
-  verifyFIndAllparams,
 };

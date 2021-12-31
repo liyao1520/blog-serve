@@ -71,7 +71,7 @@ class UserController {
     }
   }
   async getUserList(ctx, next) {
-    await ctx.getList(User, {
+    await ctx.findAll(User, {
       attributes: {
         exclude: ["password", "deletedAt"],
       },
