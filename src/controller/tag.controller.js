@@ -1,3 +1,4 @@
+const sequelize = require("sequelize");
 const Tag = require("../model/tag.model");
 const { addTag, delTag } = require("../service/tag.service");
 
@@ -13,7 +14,21 @@ class TagController {
     };
   }
   async findAll(ctx) {
-    await ctx.findAll(Tag);
+    await ctx.findAll(Tag, {
+      attributes: {
+        include: [
+          [
+            sequelize.literal(`(
+          SELECT COUNT(*)
+          FROM article_tag AS at
+          WHERE
+            at.tagId = tag.id
+      )`),
+            "count",
+          ],
+        ],
+      },
+    });
   }
   async del(ctx) {
     const res = await delTag(ctx.request.params.id);

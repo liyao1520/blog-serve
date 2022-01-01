@@ -56,5 +56,20 @@ class uploadController {
       };
     }
   }
+  async DelImg(ctx, next) {
+    const { hash } = ctx.request.params;
+    const { data } = await axios({
+      url: "https://sm.ms/api/v2/delete/" + hash,
+      headers: {
+        Authorization: SMMS_AUTH,
+      },
+    });
+    const { success, message } = data;
+    ctx.body = {
+      code: success ? 0 : -1,
+      msg: message,
+      result: "",
+    };
+  }
 }
 module.exports = new uploadController();

@@ -77,18 +77,24 @@ class ArticleController {
       });
     }
 
-    await ctx.findAll(Article, {
-      include: [includeTagOpt, "classify"],
-      order: orderOpt,
-      where: whereOpt,
-      distinct: true,
-    });
-    console.log({
-      include: [includeTagOpt, "classify"],
-      order: orderOpt,
-      where: whereOpt,
-      distinct: true,
-    });
+    await ctx.findAll(
+      Article,
+      {
+        include: [includeTagOpt, "classify"],
+        order: orderOpt,
+        where: whereOpt,
+        distinct: true,
+      },
+      (item) => {
+        try {
+          item.content = item.content.match(/.*?\n/)[0].replace("\n", "");
+          return item;
+        } catch (e) {
+          item.content = "";
+          return item;
+        }
+      }
+    );
   }
   async update(ctx) {
     const { content, title, cover, canComment, id, classify, tags } = ctx.request.body;

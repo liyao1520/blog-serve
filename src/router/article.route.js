@@ -7,8 +7,8 @@ const articleRouter = new Router({
 });
 articleRouter.post("/", auth, hadAdminPermission, verifyArticleAdd, add);
 articleRouter.get("/", findAll);
-articleRouter.put("/", verifyArticleUpdate, HadArticleById, update);
-articleRouter.delete("/:id", HadArticleById, del);
+articleRouter.put("/",auth, hadAdminPermission, verifyArticleUpdate, HadArticleById, update);
+articleRouter.delete("/:id",auth, hadAdminPermission, HadArticleById, del);
 articleRouter.get("/:id", HadArticleById, getById);
 articleRouter.get("/count/:id", addCount);
 module.exports = articleRouter;

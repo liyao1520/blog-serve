@@ -1,5 +1,7 @@
+const sequelize = require("sequelize");
 const { addClassify, delClassify } = require("../service/classify.service");
 const Classify = require("../model/classify.model");
+const Articles = require("../model/article.model");
 class ClassifyController {
   async add(ctx, next) {
     const { name, describe } = ctx.request.body;
@@ -14,7 +16,21 @@ class ClassifyController {
     };
   }
   async findAll(ctx) {
-    await ctx.findAll(Classify);
+    await ctx.findAll(Classify, {
+      attributes: {
+        include: [
+          [
+            sequelize.literal(`(
+          SELECT COUNT(*)
+          FROM articles AS art
+          WHERE
+              art.classifyId = classify.id
+      )`),
+            "count",
+          ],
+        ],
+      },
+    });
   }
   async del(ctx) {
     const res = await delClassify(ctx.request.params.id);

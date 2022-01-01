@@ -1,6 +1,6 @@
 module.exports = async function (ctx, next) {
   if (ctx.request.method === "GET") {
-    ctx.findAll = async function findAll(Model, option) {
+    ctx.findAll = async function findAll(Model, option, formatData) {
       if (Model === undefined) {
         throw "function getList  model is  undefined";
       }
@@ -11,10 +11,11 @@ module.exports = async function (ctx, next) {
       if (pageFlag) {
         // this 为ctx,
         const { count, rows } = await Model.findAndCountAll(option, offset, limit);
+
         ctx.body = {
           code: 0,
           msg: "查询成功",
-          result: rows,
+          result: typeof formatData === "function" ? rows.map(formatData) : rows,
           count,
         };
       } else {
@@ -22,7 +23,7 @@ module.exports = async function (ctx, next) {
         ctx.body = {
           code: 0,
           msg: "查询成功",
-          result: rows,
+          result: typeof formatData === "function" ? rows.map(formatData) : rows,
         };
       }
     };
