@@ -6,11 +6,14 @@ module.exports = async function (ctx, next) {
       }
       // pageFlag 0:不分页 1:分页
       const { pageSize, pageNum, pageFlag = 0 } = ctx.request.query;
+
       const limit = parseInt(pageSize);
       const offset = limit * (parseInt(pageNum) - 1);
+
       if (pageFlag) {
         // this 为ctx,
-        const { count, rows } = await Model.findAndCountAll(option, offset, limit);
+
+        const { count, rows } = await Model.findAndCountAll({ ...option, offset, limit });
 
         ctx.body = {
           code: 0,
