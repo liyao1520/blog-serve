@@ -9,7 +9,10 @@ const verifyArticleAdd = async (ctx, next) => {
       type: "string",
       min: 1,
     },
-    cover: "string",
+    cover: {
+      required: false,
+      type: "string",
+    },
     canComment: [0, 1],
     tags: {
       required: false,
@@ -34,7 +37,10 @@ const verifyArticleUpdate = async (ctx, next) => {
       type: "string",
       min: 1,
     },
-    cover: "string",
+    cover: {
+      required: false,
+      type: "string",
+    },
     canComment: [0, 1],
     tags: {
       required: false,
