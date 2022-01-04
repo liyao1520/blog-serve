@@ -55,6 +55,7 @@ const HadArticleById = async (ctx, next) => {
   } else {
     id = ctx.request.body.id;
   }
+
   const article = await getArticleById(id);
   if (!article) {
     return ctx.app.emit(

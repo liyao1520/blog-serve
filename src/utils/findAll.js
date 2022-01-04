@@ -5,11 +5,11 @@ module.exports = async function (ctx, next) {
         throw "function getList  model is  undefined";
       }
       // pageFlag 0:不分页 1:分页
-      const { pageSize, pageNum, pageFlag = 0 } = ctx.request.query;
+      let { pageSize = 10, pageNum = 1, pageFlag = 0 } = ctx.request.query;
 
       const limit = parseInt(pageSize);
       const offset = limit * (parseInt(pageNum) - 1);
-
+      pageFlag = parseInt(pageFlag);
       if (pageFlag) {
         // this 为ctx,
 

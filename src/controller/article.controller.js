@@ -56,7 +56,7 @@ class ArticleController {
       orderOpt.push(["count", "DESC"]);
     }
     if (sort == "new") {
-      orderOpt.push(["updatedAt", "DESC"]);
+      orderOpt.push(["createdAt", "DESC"]);
     }
     // 3. classifyId
     if (!isNaN(parseInt(classifyId))) {
@@ -87,10 +87,11 @@ class ArticleController {
       },
       (item) => {
         try {
-          item.content = item.content.match(/.*?\n/)[0].replace("\n", "");
+          item.content = item.content.trim().match(/.*?\n/)[0];
           return item;
         } catch (e) {
           item.content = "";
+
           return item;
         }
       }

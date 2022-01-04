@@ -25,7 +25,7 @@ module.exports = {
     result: "",
   },
   JsonWebTokenError: {
-    code: -1,
+    code: -2,
     msg: "token认证失败",
     result: "",
   },

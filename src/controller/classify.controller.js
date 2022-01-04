@@ -1,7 +1,7 @@
 const sequelize = require("sequelize");
 const { addClassify, delClassify } = require("../service/classify.service");
 const Classify = require("../model/classify.model");
-const Articles = require("../model/article.model");
+
 class ClassifyController {
   async add(ctx, next) {
     const { name, describe } = ctx.request.body;
