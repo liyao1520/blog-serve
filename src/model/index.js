@@ -4,6 +4,7 @@ const Classify = require("./classify.model");
 const Tag = require("./tag.model");
 const User = require("./user.model");
 const Comment = require("./comment.model");
+const Markdowm = require("./markdowm.model");
 
 // 关联
 Article.belongsToMany(Tag, {
