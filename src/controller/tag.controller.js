@@ -19,10 +19,7 @@ class TagController {
         include: [
           [
             sequelize.literal(`(
-          SELECT COUNT(*)
-          FROM article_tag AS at
-          WHERE
-            at.tagId = tag.id
+              SELECT COUNT(*) FROM article_tag AS at LEFT JOIN articles ar ON at.articleId = ar.id WHERE  ar.deletedAt is null and at.tagId = tag.id
       )`),
             "count",
           ],

@@ -24,7 +24,7 @@ class ClassifyController {
           SELECT COUNT(*)
           FROM articles AS art
           WHERE
-              art.classifyId = classify.id
+              art.classifyId = classify.id and art.deletedAt is  null
       )`),
             "count",
           ],
