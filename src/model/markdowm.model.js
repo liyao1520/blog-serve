@@ -8,7 +8,7 @@ const Markdown = sequelize.define("markdown", {
     comment: "唯一名",
   },
   content: {
-    type: DataTypes.STRING,
+    type: DataTypes.TEXT,
     allowNull: false,
     comment: "markdown内容",
   },
